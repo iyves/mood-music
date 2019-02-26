@@ -1,7 +1,7 @@
-Yves Wienecke
+Yves Wienecke<Br/>
 Steven Borrego
 
-#CS465 Final Project - Mood Music
+# CS465 Final Project - Mood Music
 
 Synthesia is a peculiar medical condition that combines senses together.
 
