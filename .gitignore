@@ -1,0 +1,13 @@
+# All build files
+dist/*
+
+# All log files
+*.log
+npm-debug.log*
+*.bak
+
+# All modules
+node_modules
+
+# All swap files
+*.swp
