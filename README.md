@@ -31,6 +31,16 @@ git push -u origin develop
 ```
 
 ```
+// Track changes from an existing branch (after develop branch is created)
+git checkout --track origin/develop
+```
+
+```
+// Delete a branch
+git branch -d branch_to_delete
+```
+
+```
 // Change current branch to 'develop' and create a branch for a new feature
 git checkout develop
 git checkout -b feature_branch
