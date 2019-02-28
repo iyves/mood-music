@@ -42,3 +42,7 @@ git checkout develop
 git merge feature_branch
 ```
 
+
+# Spotify API references
+
+* [spotify-web-api-node for making requests](BQA6hJ6ecDWcFEeO1GZOamgZYrtFpkXoOsEFhTPUAtkfpPrPD0dCkB0qvjL3G2sL2UaOZVB084I6s4fD4PoOX7YBCQucZydyv2CqlHXMHIG1Ht6_6pGKXAWBuk_tVQgOh3HOzvMQ6dQkYlLEQZlKtXudIV63BAVnuA)
