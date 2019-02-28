@@ -14,7 +14,6 @@ var spotifyApi = new SpotifyWebApi({
 });
 
 // Authenitcation using the Client Credential flow strategy, doesn't require user permissions
-// OAuth Access token obtained from requesting in the spotify console docs
 spotifyApi.clientCredentialsGrant().then(
   function(data) {
     console.log('The access token expires in ' + data.body['expires_in']);
