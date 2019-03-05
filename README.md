@@ -66,6 +66,6 @@ git merge feature_branch
 ```
 
 
-# Spotify API references
+# API references
 
 * [spotify-web-api-node for making requests](https://github.com/thelinmichael/spotify-web-api-node)
