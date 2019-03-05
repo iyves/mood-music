@@ -20,6 +20,7 @@ This project uses an express backend, bootstrap frontend, and apis such as Spoti
 
 ## TODO
 
+By March 8
 -   Create form on front end to get data from user for request
   - What type of data should the user be able to request?
 -   Connect form data on submit to server sending query to spotify
@@ -67,4 +68,4 @@ git merge feature_branch
 
 # Spotify API references
 
-* [spotify-web-api-node for making requests](BQA6hJ6ecDWcFEeO1GZOamgZYrtFpkXoOsEFhTPUAtkfpPrPD0dCkB0qvjL3G2sL2UaOZVB084I6s4fD4PoOX7YBCQucZydyv2CqlHXMHIG1Ht6_6pGKXAWBuk_tVQgOh3HOzvMQ6dQkYlLEQZlKtXudIV63BAVnuA)
+* [spotify-web-api-node for making requests](https://github.com/thelinmichael/spotify-web-api-node)
