@@ -4,12 +4,54 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.0/css/bootstrap.min.css" />
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/index.js"></script>
 
     <link rel=”icon” type=”image/png” href=”/assets/favicon.png” />
 	</head>
 	<body>
-  
+		<nav class="navbar navbar-expand-md navbar-info bg-info mb-5">
+			<a class="navbar-brand text-light" href ="#">mood music</a>
+			<div class="navbar-collapse">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<a class="nav-link text-light" id="about" href="#">about</a>
+					</li>
+				</ul>
+			</div>
+		</nav>
+
+		<div class="container" id="info">
+			<div class="row">
+				<p>welcome to mood music</p>
+			</div>
+		</div>
+
+		<div class="containter">
+			<div class="form">
+				<div class="form-group row">
+					<label class="col-form-label col-sm-4" style="text-align: right;">search:</label><div class="col-sm-4"><input type="text" id="input" class="form-control"></input></div>
+						<button type="submit" class="btn btn-primary" id="submit">submit</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="container" id="output">
+
+		</div>
 	</body>
+
+	<script>
+		$('#submit').on('click', function(event){
+			$.ajax({
+				'type': 'GET',
+				'url': '/back',
+				'data': { input: $('#input').val },
+				'success': function(data){
+					$('#output').text = data.input;
+				}
+			});
+		});
+	</script>
 </html>
