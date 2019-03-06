@@ -1,122 +1,62 @@
 'use strict';
 
-var express = require('express');
-var server = express();
+var express = require("express");
+var app = express();
 var path = require("path")
-var http = require("http");
-var router = express.Router();
-const bodyParser = require('body-parser');
-
-var url = require('url'); // do not change this line
-var querystring = require('querystring'); // do not change this line
+var bodyParser = require("body-parser");
+var querystring = require('querystring');
+var http = require('http');
+var request = require('request');
 
 
-server.use(bodyParser.urlencoded({ extended: true }));
-server.use(express.static(path.join(__dirname, '')));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+// Holds onto the authentication key for making requests through Spotify API
+var token = {};
 
 
-/*
-var SpotifyWebApi = require('spotify-web-api-node');
 
-// Wrapper for Spotify api
-// cliend id and secret obtained by registering this app on spotify's website for developers
-var spotifyApi = new SpotifyWebApi({ 
-    clientId: 'd7038e13e0374e98916ccc5e3bfdf257',
-    clientSecret: '46ec9dccca394360a7b1a5e9423fc303',
-    redirectUri: '/'
+// Home page
+app.get('/',function(req,res){
+  getCredentials(req);
+  res.sendFile(path.join(__dirname, '/index.html'));
 });
 
-// Authentication using the Client Credential flow strategy, doesn't require user permissions
-spotifyApi.clientCredentialsGrant().then(
-  function(data) {
-    console.log('The access token expires in ' + data.body['expires_in']);
-    console.log('The access token is ' + data.body['access_token']);
 
-    // Save the access token so that it's used in future calls
-    spotifyApi.setAccessToken(data.body['access_token']);
-  },
-  function(err) {
-    console.log('Something went wrong when retrieving an access token', err);
-  }
-);
-*/
 
-router.post('/', function(req, res) {
-    res.sendFile('/index.html');
-    res.send();
-});
+// Request for data when user submit an artist/album/track keyword
+app.post('/submit', function(req, res) { 
+  getTracks(req.body.input).then(
+    function(tracks) {
+      var trackInfo = [];
+      var items = tracks.tracks.items; 
 
-server.get('/back', function(req, res) {
-  res.status(200);
-  res.type('text/plain'); 
- var query = url.parse(req.url, true).query;
-  
-  console.log('Went into request: ' + query['search'])
-  ;
-  router.post('/', function(req, res) {
-      res.sendFile('/index.html');
-      res.send();
-  });
-  /* 
-  spotifyApi.searchTracks('Love')
-    .then(function(data) {
-      console.log('Search by "Love"\n', data.body.tracks.items);
-      var items = data.body.tracks.items;
-      res.write('<table border="1">');
-        res.write('<tr><th>#</th><th>name</th><th>id</th><th>artist</th></tr>');
-        for(var i in items) {
-            res.write('<tr>');
-              res.write('<td>' + i + '</td>');
-              res.write('<td>' + items[i].album.name + '</td>');
-              res.write('<td>' + items[i].album.id + '</td>');
-              res.write('<td>' + items[i].album.artists[0].name + '</td>');
-            res.write('<tr>');
-        }
-      res.write('</table>');
-      res.end(); // res.end() moved here, after response is completed
+      for (var t in items) {
+          var artists = [];
+          for (var a in items[t].artists ) {
+            artists.push(items[t].artists[a].name);
+          }
+
+          trackInfo.push({'id':items[t].id,
+                          'name': items[t].name,
+                          'popularity':items[t].popularity,
+                          'artists':artists});
+      }
+
+
+
+      res.send(trackInfo); 
     }, function(err) {
-      console.error(err);
+      console.log(err);
     });
-      */
 });
 
 
-server.get('/form', function(req, res) {
-  res.status(200);
-  res.type('text/html');
-  res.write('<!DOCTYPE html>');
-    res.write('<html>');
-      res.write('<body>');
-  
-        // Get request for tracks with 'Love' in the name, album or artist field
-        spotifyApi.searchTracks('Love')
-          .then(function(data) {
-            console.log('Search by "Love"\n', data.body.tracks.items);
-            
-            var items = data.body.tracks.items;
-            res.write('<table border="1">');
-              res.write('<tr><th>#</th><th>name</th><th>id</th><th>artist</th></tr>');
-              for(var i in items) {
-                  res.write('<tr>');
-                    res.write('<td>' + i + '</td>');
-                    res.write('<td>' + items[i].album.name + '</td>');
-                    res.write('<td>' + items[i].album.id + '</td>');
-                    res.write('<td>' + items[i].album.artists[0].name + '</td>');
-                  res.write('<tr>');
-              }
-            res.write('</table>');
-            res.end(); // res.end() moved here, after response is completed
-          }, function(err) {
-            console.error(err);
-          });
 
-        res.write("Hello World!"); // Notice how this is written to the document before the table is
-      res.write('</body>');
-    res.write('</html>');
-    // Notice - no res.end() here because the response from GET requests comes after page is loaded
-});
-
-server.get('*', function(req, res) {
+// TODO: Create front end 404.html page to send
+// 404 page
+app.get('*', function(req, res) {
   res.status(404);
   console.log("ah");
   res.type('text/html');
@@ -129,8 +69,65 @@ server.get('*', function(req, res) {
   res.end();
 });
 
+
+
+// Start server
 if (process.env.PORT)
   console.log(`Server is now listening, go to http:\/\/localhost:${process.env.PORT}`);
 else
   console.log('Server is now listening, go to http://localhost:8080');
-server.listen(process.env.PORT || 8080);
+app.listen(process.env.PORT || 8080);
+
+
+
+
+
+var getCredentials = function (req) {    
+  // Get authentification for using Spotify API
+   var authOptions = {
+     method: 'POST',
+     url: 'https://accounts.spotify.com/api/token',
+     headers: { 'Authorization': 'Basic ' + (new Buffer('d7038e13e0374e98916ccc5e3bfdf257' + ':' + '46ec9dccca394360a7b1a5e9423fc303').toString('base64')) },
+     form: { grant_type: 'client_credentials' },
+     json: true
+   };
+
+  request(authOptions, function (error, response, body) {
+    if (error) {
+      throw new Error(error);
+    }
+    
+    token = body;
+    console.log('The access token expires in ' + body['expires_in']);
+    console.log('The access token is ' + body['access_token']);
+  });
+}
+
+
+var getTracks = function(searchKey) { 
+  // Options for request 
+  var options = {
+    url: 'https://api.spotify.com/v1/search?q=' + searchKey + '&type=track',
+    headers: {
+      'Authorization': 'Bearer ' + token.access_token
+    },
+    json: true
+  };
+  
+  // Do the request!
+  var promise = new Promise(function(resolve, reject) {
+    request.get(options, function(error, response, body){
+      resolve (body);
+    })
+  });  
+
+  promise.then(function(data) {
+    return data; 
+  }, function(err) {
+    console.log(err); 
+    return [];
+  });
+
+  return promise;
+   
+}
