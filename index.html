@@ -7,7 +7,7 @@
 		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.0/css/bootstrap.min.css" />
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
 
-    <link rel=”icon” type=”image/png” href=”/assets/favicon.png” />
+    <link rel=”icon” type=”image/png” href=”assets/favicon.png” />
 	</head>
 	<body>
 		<nav class="navbar navbar-expand-md navbar-info bg-info mb-5">
@@ -28,12 +28,12 @@
 		</div>
 
 		<div class="containter">
-			<form class="form" action="/back" method="GET">
+			<div class="form">
 				<div class="form-group row">
 					<label class="col-form-label col-sm-4" style="text-align: right;">search:</label><div class="col-sm-4"><input name="search" type="text" id="input" class="form-control"></input></div>
-						<button type="submit" class="btn btn-primary" id="submit">submit</button>
+						<button  class="btn btn-primary" id="submit">submit</button>
 				</div>
-			</form>
+			</div>
 		</div>
 
 		<div class="container" id="output">
@@ -41,16 +41,18 @@
 		</div>
 	</body>
 
-	<script>/*
+	<script>
 		$('#submit').on('click', function(event){
+      console.log("in click event");
 			$.ajax({
+        'url' : '/submit',
 				'type': 'POST',
-        'url' : './back',
-				'data': '2'/* { input: $('#input').val },
+				'data':  { input: $('#input').val() },
 				'success': function(data){
-					$('#output').text = data.input;
+          console.log(data);
+          $('#output').html(JSON.stringify(data));
 				}
 			});
-		});*/
+		});
 	</script>
 </html>
