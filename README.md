@@ -68,4 +68,7 @@ git merge feature_branch
 
 # API references
 
-* [spotify-web-api-node for making requests](https://github.com/thelinmichael/spotify-web-api-node)
+* [Spotify Official API](https://developer.spotify.com/documentation/web-api/reference/search/search/)
+* [Spotify Web authentication API Example/Guide](https://github.com/spotify/web-api-auth-examples/blob/master/client_credentials/app.js)
+* [Spotify module aka the easy way out](https://github.com/thelinmichael/spotify-web-api-node)
+* [Promise pending (for waiting to get a response from API before doing stuff)](https://stackoverflow.com/questions/38884522/promise-pending)
