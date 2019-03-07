@@ -7,8 +7,9 @@ var bodyParser = require("body-parser");
 var querystring = require('querystring');
 var http = require('http');
 var request = require('request');
+var favicon = require('serve-favicon');
 
-
+app.use(favicon(path.join(__dirname, "assets/favicon.png")));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
