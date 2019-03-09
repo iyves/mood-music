@@ -6,32 +6,48 @@
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.0/css/bootstrap.min.css" />
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
+		<link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">
+		<style>
+			#info {
+				font-family: 'Comfortaa', cursive;
+			}
 
+			.form {
+				display: none;
+			}
+		</style>
 	</head>
-	<body>
-		<nav class="navbar navbar-expand-md navbar-info bg-info mb-5">
-			<a class="navbar-brand text-light" href ="#">mood music</a>
-			<div class="navbar-collapse">
-				<ul class="navbar-nav ml-auto">
-					<li class="nav-item">
-						<a class="nav-link text-light" id="about" href="#">about</a>
-					</li>
-				</ul>
-			</div>
-		</nav>
+	<body class="bg-dark">
 
-		<div class="container" id="info">
-			<div class="row">
-				<p>welcome to mood music</p>
-			</div>
-		</div>
-
-		<div class="containter">
-			<div class="form">
-				<div class="form-group row">
-					<label class="col-form-label col-sm-4" style="text-align: right;">search:</label><div class="col-sm-4"><input name="search" type="text" id="input" class="form-control"></input></div>
-						<button  class="btn btn-primary" id="submit">submit</button>
+		<div class="pos-f-t">
+				<div class="collapse" id="navbarToggleExternalContent">
+					<div class="bg-dark p-4">
+						<h4 class="text-white">home</h4>
+						<span class="text-muted">Toggleable via the navbar brand.</span>
+					</div>
 				</div>
+				<nav class="navbar navbar-dark bg-dark">
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+				</nav>
+			</div>
+
+
+		<div class="container text-light" id="info">
+			<div class="row justify-content-center">
+				<h1 style="font-size: 7em">Mood</h1>
+			</div>
+
+				<div class="form">
+					<div class="form-group row">
+						<label class="col-form-label col-sm-4" style="text-align: right;">search:</label><div class="col-sm-4"><input name="search" type="text" id="input" class="form-control"></input></div>
+						<button  class="btn btn-primary" id="submit">submit</button>
+					</div>
+				</div>
+
+			<div class="row justify-content-center">
+				<h1 style="font-size: 7em">Music</h1>
 			</div>
 		</div>
 
@@ -41,6 +57,13 @@
 	</body>
 
 	<script>
+		$('#info').hover(function(){
+			$('.form').css('display', 'block');
+		},
+		function(){
+			$('.form').css('display', 'none');
+		});
+
 		$('#submit').on('click', function(event){
       console.log("in click event");
 			$.ajax({
