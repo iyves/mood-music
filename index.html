@@ -21,13 +21,13 @@
 			}
 		</style>
 	</head>
-	<body class="bg-dark">
+	<body class="bg-dark" id="top">
 
 		<div class="pos-f-t">
 				<div class="collapse" id="navbarToggleExternalContent">
 					<div class="bg-dark p-4">
-						<h4 class="text-white">home</h4>
-						<span class="text-muted">Toggleable via the navbar brand.</span>
+						<h4 class="nav-item"><a class="text-white" href="#top">home</a></h4>
+						<span><a class="text-white" href="#about">about</a></span>
 					</div>
 				</div>
 				<nav class="navbar navbar-dark bg-dark">
@@ -44,9 +44,17 @@
 			</div>
 
 				<div class="form">
-					<div class="form-group row">
-						<label class="col-form-label col-sm-4" style="text-align: right;">search:</label><div class="col-sm-4"><input name="search" type="text" id="input" class="form-control"></input></div>
-						<button  class="btn btn-primary" id="submit">submit</button>
+					<div class="form-group row justify-content-center">
+						<div class="col-sm-4">
+							<label for="sel1">Search by:</label>
+							<select class="form-control" id="sel1">
+								<option>Artist</option>
+								<option>Song</option>
+							</select>
+							<label class="col-form-label" style="text-align: right;">Search:</label>
+							<input name="search" type="text" id="input" class="form-control"></input>
+							<div style="padding-top: 15px;"><button  class="btn btn-primary" id="submit">submit</button></div>
+						</div>
 					</div>
 				</div>
 
@@ -59,7 +67,7 @@
 
 		</div>
 
-		<div class="container text-light" id="about">
+		<div class="container text-light" name="about" id="about">
 			<div class="row justify-content-center">
 				<h1 style="font-size: 7em">About</h1>
 				<div class="container" id="cards">
