@@ -8,10 +8,16 @@
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
 		<link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">
 		<style>
+      .vertical-center {
+        min-height: 100vh; 
+        display: flex;
+        align-items: center;
+      }
+
 			#info {
 				font-family: 'Comfortaa', cursive;
 			}
-
+    
 			.form {
         height: 0vh;
         overflow: hidden;
@@ -26,55 +32,63 @@
 			#about {
 				font-family: 'Comfortaa', cursive;
 			}
+
+      .pos-f-t {
+      }
+
 		</style>
 	</head>
 	<body class="bg-dark" id="top">
 
 		<div class="pos-f-t">
-				<div class="collapse" id="navbarToggleExternalContent">
-					<div class="bg-dark p-4">
-						<h4 class="nav-item"><a class="text-white" href="#top">home</a></h4>
+      <nav class="navbar navbar-dark bg-dark fixed-top">
+        <div style="width: 10vw;">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button><br />
+				<div class="collapse" id="navbarToggleExternalContent" style="float: left;">
+					<div class="bg-dark p-4 ">
+						<h4 class="align-left nav-item"><a class="text-white" href="#top">home</a></h4>
 						<span><a class="text-white" href="#about">about</a></span>
 					</div>
 				</div>
-				<nav class="navbar navbar-dark bg-dark">
-					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-						<span class="navbar-toggler-icon"></span>
-					</button>
-				</nav>
-			</div>
+        </div>
+        
+      </nav>
+    </div>
 
+    <div class="vertical-center">
+      <div class="container text-light" id="info">
+        <div class="row justify-content-center">
+          <h1 style="font-size: 7em">Mood</h1>
+        </div>
 
-		<div class="container text-light" id="info">
-			<div class="row justify-content-center">
-				<h1 style="font-size: 7em">Mood</h1>
-			</div>
+          <div class="form">
+            <div class="form-group row justify-content-center">
+              <div class="col-sm-4">
+                <label for="sel1">Search by:</label>
+                <select class="form-control" id="sel1">
+                  <option>Artist</option>
+                  <option>Song</option>
+                </select>
+                <label class="col-form-label" style="text-align: right;">Search:</label>
+                <input name="search" type="text" id="input" class="form-control"></input>
+                <div style="padding-top: 15px;"><button  class="btn btn-primary" id="submit">submit</button></div>
+              </div>
+            </div>
+          </div>
 
-				<div class="form">
-					<div class="form-group row justify-content-center">
-						<div class="col-sm-4">
-							<label for="sel1">Search by:</label>
-							<select class="form-control" id="sel1">
-								<option>Artist</option>
-								<option>Song</option>
-							</select>
-							<label class="col-form-label" style="text-align: right;">Search:</label>
-							<input name="search" type="text" id="input" class="form-control"></input>
-							<div style="padding-top: 15px;"><button  class="btn btn-primary" id="submit">submit</button></div>
-						</div>
-					</div>
-				</div>
-
-			<div class="row justify-content-center">
-				<h1 style="font-size: 7em">Music</h1>
-			</div>
-		</div>
+        <div class="row justify-content-center">
+          <h1 style="font-size: 7em">Music</h1>
+        </div>
+      </div>
+    </div>
 
 		<div class="container" id="output">
 
 		</div>
 
-		<div class="container text-light" name="about" id="about">
+		<div class="container text-light bg-secondary" name="about" id="about">
 			<div class="row justify-content-center">
 				<h1 style="font-size: 7em">About</h1>
 				<div class="container" id="cards">
