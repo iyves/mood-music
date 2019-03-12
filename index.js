@@ -38,11 +38,21 @@ app.post('/submit', function(req, res) {
           for (var a in items[t].artists ) {
             artists.push(items[t].artists[a].name);
           }
+          var h = Math.floor(Math.random() * 360);
+          var s = Math.floor(Math.random() * 100);
+          var l = Math.floor(Math.random() * 100);
 
-          trackInfo.push({'id':items[t].id,
+
+          trackInfo.push({'id': items[t].id,
                           'name': items[t].name,
-                          'popularity':items[t].popularity,
-                          'artists':artists});
+                          'popularity': items[t].popularity,
+                          'artists': artists,
+                          'color': {
+                            'h': h,
+                            's': s,
+                            'l': l  
+                          }
+                        });
       }
 
 
