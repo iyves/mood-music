@@ -13,8 +13,15 @@
 			}
 
 			.form {
-				display: none;
+        height: 0vh;
+        overflow: hidden;
+        transition: all 1s;
 			}
+
+      #info:hover > .form { 
+        height: 23vh;
+        transition: all 1s;
+      }
 
 			#about {
 				font-family: 'Comfortaa', cursive;
@@ -97,13 +104,6 @@
 	</body>
 
 	<script>
-		$('#info').hover(function(){
-			$('.form').css('display', 'block');
-		},
-		function(){
-			$('.form').css('display', 'none');
-		});
-
 		$('#submit').on('click', function(event){
       console.log("in click event");
 			$.ajax({
