@@ -19,14 +19,14 @@
 			}
     
 			.form {
-        height: 0vh;
+        max-height: 0vh;
         overflow: hidden;
-        transition: all 1s;
+        transition: all 2s;
 			}
 
       #info:hover > .form { 
-        height: 23vh;
-        transition: all 1s;
+        max-height: 100vh;
+        transition: all 2s;
       }
 
 			#about {
@@ -34,6 +34,11 @@
 			}
 
       .pos-f-t {
+      }
+
+      #output {
+        max-height: 100vh;
+        margin-bottom: 5vh;
       }
 
 		</style>
@@ -85,6 +90,10 @@
     </div>
 
 		<div class="container" id="output">
+      <div class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner" style="min-height: 20vw; min-width: 30vw;">
+        </div>
+      </div>
 
 		</div>
 
@@ -118,16 +127,36 @@
 	</body>
 
 	<script>
+    var showResult = function(data) {
+        console.log(data);
+        var o = '';
+          for (var i = 0; i < data.length; i +=1) {
+            o += '<div class="carousel-item';
+            if (i === 0) { o += ' active '; }
+            o += '" style="background-color: hsl('
+              + data[i].color['h'] + ', '
+              + data[i].color['s'] + '%, '
+              + data[i].color['l'] + '%'
+              + ')">'; 
+              o += '<div style="height: 60vh;"></div>';
+              o += '<div class="carousel-caption d-none d-md-block">';
+                o += '<h5>' + data[i].name + '</h5>';
+                o += '<p> Artists: ' + data[i].artists.join(', ');
+                  o += '<br/>Popularity: ' + data[i].popularity;
+                o+= '</p>';
+              o += '</div>';
+            o += '</div>';
+          }
+        $('.carousel-inner').append(o);
+      }
+
 		$('#submit').on('click', function(event){
       console.log("in click event");
 			$.ajax({
         'url' : '/submit',
 				'type': 'POST',
 				'data':  { input: $('#input').val() },
-				'success': function(data){
-          console.log(data);
-          $('#output').html(JSON.stringify(data));
-				}
+				'success': showResult
 			});
 		});
 	</script>
