@@ -68,7 +68,7 @@
           <h1 style="font-size: 7em">Mood</h1>
         </div>
 
-          <div class="form">
+          <div class="form" id="frm">
             <div class="form-group row justify-content-center">
               <div class="col-sm-4">
                 <label for="sel1">Search by:</label>
@@ -78,7 +78,7 @@
                 </select>
                 <label class="col-form-label" style="text-align: right;">Search:</label>
                 <input name="search" type="text" id="input" class="form-control"></input>
-                <div style="padding-top: 15px;"><button  class="btn btn-primary" id="submit">submit</button></div>
+                <div style="padding-top: 15px;"><input type="submit" class="btn btn-primary" id="submit" value="Submit"></button></div>
               </div>
             </div>
           </div>
@@ -95,9 +95,13 @@
         </div>
       </div>
 
+      <div class="row" id="columns" style="min-height: 20vw; min-width: 30vw; margin-top: 15px;">
+
+      </div>
+
 		</div>
 
-		<div class="container text-light bg-secondary" name="about" id="about">
+		<div class="container text-light bg-secondary" style="min-width: 100vw" name="about" id="about">
 			<div class="row justify-content-center">
 				<h1 style="font-size: 7em">About</h1>
 				<div class="container" id="cards">
@@ -148,6 +152,18 @@
             o += '</div>';
           }
         $('.carousel-inner').append(o);
+
+        var c ='';
+        console.log("before loop");
+        for(var i = 0; i < data.length; i += 1) {
+          console.log("inside loop");
+          c += '<div class="col-sm-4" style="background-color: hsl('
+            + data[i].color['h'] + ','
+            + data[i].color['s'] + '%, '
+            + data[i].color['l'] + '%'
+            + ')"></div>';
+        }
+        $('#columns').append(c);
       }
 
 		$('#submit').on('click', function(event){
@@ -157,7 +173,15 @@
 				'type': 'POST',
 				'data':  { input: $('#input').val() },
 				'success': showResult
-			});
-		});
+    });
+
+
+    $('#input').on('keyup', function(event){
+      console.log('in keyup event');
+      if(event.which === 13){
+        $('#submit').click();
+      }
+    });
+	});
 	</script>
 </html>
