@@ -148,7 +148,7 @@
               o += '</div>';
             o += '</div>';
           }
-        $('.carousel-inner').append(o);
+        $('.carousel-inner').html(o);
 
         var c ='';
         for(var i = 0; i < data.length; i += 1) {
@@ -158,7 +158,7 @@
             + data[i].color['l'] + '%'
             + ')"></div>';
         }
-       $('#columns').append(c);
+       $('#columns').html(c);
        $('#columns').css("min-height", "50vw").css("min-width", "100vw").css("margin-bottom", "5vh");
        $('.carousel-inner').css("min-height", "20vw").css("min-width", "30vw");
        $('#columns').css('display', block);
@@ -170,7 +170,7 @@
 			$.ajax({
         'url' : '/submit',
 				'type': 'POST',
-				'data':  { input: $('#input').val() },
+				'data':  {option: $('#sel1').val(), input: $('#input').val() },
 				'success': showResult
     });
 
