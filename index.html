@@ -39,6 +39,7 @@
       #output {
         max-height: 100vh;
         margin-bottom: 5vh;
+        display: hidden;
       }
 
 		</style>
@@ -58,7 +59,6 @@
 					</div>
 				</div>
         </div>
-        
       </nav>
     </div>
 
@@ -82,24 +82,21 @@
               </div>
             </div>
           </div>
-
-        <div class="row justify-content-center">
-          <h1 style="font-size: 7em">Music</h1>
+          <div class="row justify-content-center">
+            <h1 style="font-size: 7em">Music</h1>
+          </div>
         </div>
       </div>
-    </div>
+      
+      <div class="row" id="columns">
+      </div>
 
 		<div class="container" id="output">
       <div class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner" style="min-height: 20vw; min-width: 30vw;">
+        <div class="carousel-inner">
         </div>
       </div>
-
-      <div class="row" id="columns" style="min-height: 20vw; min-width: 30vw; margin-top: 15px;">
-
-      </div>
-
-		</div>
+    </div>
 
 		<div class="container text-light bg-secondary" style="min-width: 100vw" name="about" id="about">
 			<div class="row justify-content-center">
@@ -154,16 +151,18 @@
         $('.carousel-inner').append(o);
 
         var c ='';
-        console.log("before loop");
         for(var i = 0; i < data.length; i += 1) {
-          console.log("inside loop");
-          c += '<div class="col-sm-4" style="background-color: hsl('
+          c += '<div class="col-sm" style="background-color: hsl('
             + data[i].color['h'] + ','
             + data[i].color['s'] + '%, '
             + data[i].color['l'] + '%'
             + ')"></div>';
         }
-        $('#columns').append(c);
+       $('#columns').append(c);
+       $('#columns').css("min-height", "50vw").css("min-width", "100vw").css("margin-bottom", "5vh");
+       $('.carousel-inner').css("min-height", "20vw").css("min-width", "30vw");
+       $('#columns').css('display', block);
+       $('#output').css("display", block);
       }
 
 		$('#submit').on('click', function(event){
