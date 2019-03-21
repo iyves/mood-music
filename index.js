@@ -45,6 +45,8 @@ app.post('/submit', function(req, res) {
         }
 
         trackInfo.push({'id': items[t].id,
+                        'sound': items[t].preview_url,
+                        'url': items[t].external_urls.spotify,
                         'name': items[t].name,
                         'popularity': items[t].popularity,
                         'artists': artists,
