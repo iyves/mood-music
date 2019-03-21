@@ -43,8 +43,8 @@ app.post('/submit', function(req, res) {
         for (var a in items[t].artists ) {
           artists.push(items[t].artists[a].name);
         }
-
         trackInfo.push({'id': items[t].id,
+                        'image': items[t].album.images.slice(-1)[0].url,
                         'sound': items[t].preview_url,
                         'url': items[t].external_urls.spotify,
                         'name': items[t].name,
