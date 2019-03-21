@@ -101,8 +101,8 @@ app.post('/submit', function(req, res) {
                 case 2: trackColor.h = colors['blue']; break; // Bm 
                 case 3: trackColor.s = 0; break; // Cm
                 case 4: trackColor.s = 0; break; // Dbm
-                case 5: trackColor.h = colors['purple']; break; // Dm
-                case 6: trackColor.h = colors['purple']; break; // Ebm
+                case 5: trackColor.h = colors['violet']; break; // Dm
+                case 6: trackColor.h = colors['violet']; break; // Ebm
                 case 7: trackColor.h = colors['green']; break; // Em
                 case 8: trackColor.h = colors['yellow']; break; // Fm
                 case 9: trackColor.h = colors['yellow']; break; // Gbm
