@@ -156,6 +156,7 @@
         $('#output').html('');
         maxSlide = data.length;
         currSlide = 1;  
+
         var o = '';
           for (var i = 0; i < maxSlide; i +=1) {
             o += '<div class="colorSlide" style="margin: 0 auto; position: relative; text-align: center;';
@@ -198,7 +199,16 @@
        $('#output').css("min-height", "20vw").css("min-width", "30vw");
        $('#columns').css('display', 'float');
        $('#output').css("display", 'float');
-      }
+      };
+
+    var noResult = function(data) {
+        console.log('no results');
+        $('#columns').css("min-height", "50vw").css("min-width", "100vw").css("margin-bottom", "5vh");
+        $('#columns').addClass('bg-alert');
+        $('#columns').css('display', 'float');
+
+        return;
+    };
 
 		$('#submit').on('click', function(event){
       console.log("in click event");
@@ -206,9 +216,10 @@
         'url' : '/submit',
 				'type': 'POST',
 				'data':  {option: $('#sel1').val(), input: $('#input').val() },
-				'success': showResult
+        'success': showResult,
+        'error': noResult
+        });
     });
-
 
     $('#input').on('keyup', function(event){
       console.log('in keyup event');
@@ -216,6 +227,5 @@
         $('#submit').click();
       }
     });
-	});
 	</script>
 </html>
