@@ -40,6 +40,7 @@
         max-height: 100vh;
         margin-bottom: 5vh;
         display: hidden;
+        text-align: center;
       }
 
 		</style>
@@ -54,8 +55,9 @@
         </button><br />
 				<div class="collapse" id="navbarToggleExternalContent" style="float: left;">
 					<div class="bg-dark p-4 ">
-						<h4 class="align-left nav-item"><a class="text-white" href="#top">home</a></h4>
-						<span><a class="text-white" href="#about">about</a></span>
+						<h4 class="align-left nav-item"><a class="text-white" href="#top">top</a></h4>
+						<span><a class="text-white" href="#about">about</a></span><br/>
+						<span><a id="mute" class="text-white" href="#">mute</a></span>
 					</div>
 				</div>
         </div>
@@ -92,10 +94,6 @@
       </div>
 
 		<div class="container" id="output">
-      <div class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner">
-        </div>
-      </div>
     </div>
 
 		<div class="container text-light bg-secondary" style="min-width: 100vw" name="about" id="about">
@@ -128,28 +126,65 @@
 	</body>
 
 	<script>
+    var muted = false;
+    var currSlide = 1;
+    var maxSlide = 0;
+    setInterval(() => {
+      $('.colorSlide:nth-child(' + currSlide +')').css('display', 'none');
+      $('.colorSlide:nth-child(' + currSlide +') audio')[0].pause();
+      
+      currSlide += 1;
+      if (currSlide > maxSlide){
+        currSlide = 1;
+      }
+      $('.colorSlide:nth-child(' + currSlide +')').css('display', 'block');
+      if (!muted)
+        $('.colorSlide:nth-child(' + currSlide +') audio')[0].play();
+    }, 5000); 
+
+    $('#mute').click(function(e) {
+      muted = !muted;
+      if (muted) {
+        $('.colorSlide:nth-child(' + currSlide +') audio')[0].pause();
+      } else { 
+        $('.colorSlide:nth-child(' + currSlide +') audio')[0].play();
+      }
+      e.preventDefault(); 
+    });
     var showResult = function(data) {
         console.log(data);
+        $('#output').html('');
+        maxSlide = data.length;
+        currSlide = 1;  
         var o = '';
-          for (var i = 0; i < data.length; i +=1) {
-            o += '<div class="carousel-item';
-            if (i === 0) { o += ' active '; }
-            o += '" style="background-color: hsl('
+          for (var i = 0; i < maxSlide; i +=1) {
+            o += '<div class="colorSlide" style="margin: 0 auto; position: relative; text-align: center;';
+            o += 'border-style: solid; border-width: 10%; border-color: #333333; border-radius: 2%;';
+            o += 'display: none; height: 50vh; width: 50%; overflow: hidden;';
+            o += 'background-color: hsl('
               + data[i].color['h'] + ', '
               + data[i].color['s'] + '%, '
               + data[i].color['l'] + '%'
               + ')">'; 
-              o += '<div style="height: 60vh;"></div>';
-              o += '<div class="carousel-caption d-none d-md-block">';
-                o += '<h5>' + data[i].name + '</h5>';
-                o += '<p> Artists: ' + data[i].artists.join(', ');
-                  o += '<br/>Popularity: ' + data[i].popularity;
-                o+= '</p>';
-              o += '</div>';
-            o += '</div>';
+              o += '<div class="colorCaption" ';
+              o += 'style="background-color: #404040;';
+				      o += "font-family: 'Comfortaa', cursive;";
+              o += 'width: 100%; padding: 2%;';
+              o += 'position: absolute; bottom: 0;">';
+                  o += '<h2 style="text-align: center; color: #DEDEDE;">';
+                  o += '<a target="_blank" rel="noopener" href="' + data[i].url + '" style="color: #DEDEDE;">';
+                  o += data[i].name + '</a><hr/></h2>';
+                  o += '<p style="color: #999;"> Artists:&nbsp;&emsp;&emsp;&emsp;' + data[i].artists.join(', ');
+                    o += '<br/>Popularity:&nbsp;&emsp;' + data[i].popularity;
+                  o+= '</p>';
+                  o += '<audio preload="auto" src="' + data[i].sound + '"></audio>';
+            o += '</div></div>';
           }
-        $('.carousel-inner').html(o);
-
+        $('#output').html(o);
+        $('.colorSlide:nth-child(1)').css('display', 'block');
+        if (!muted)
+          $('.colorSlide:nth-child(1) audio')[0].play();
+        
         var c ='';
         for(var i = 0; i < data.length; i += 1) {
           c += '<div class="col-sm" style="background-color: hsl('
@@ -160,7 +195,7 @@
         }
        $('#columns').html(c);
        $('#columns').css("min-height", "50vw").css("min-width", "100vw").css("margin-bottom", "5vh");
-       $('.carousel-inner').css("min-height", "20vw").css("min-width", "30vw");
+       $('#output').css("min-height", "20vw").css("min-width", "30vw");
        $('#columns').css('display', 'float');
        $('#output').css("display", 'float');
       }
