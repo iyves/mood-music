@@ -117,7 +117,7 @@
                 <li>Visualize your data!</li>
             </ol>
             This project uses an express backend, bootstrap frontend, and the Spotify api.<br/><br>
-            <a style="color: #454545" href="https://github.com/iyves/mood-music" target="_blank" rel="noopener">Click here to see the github repository for this project.</a>
+            <strong><em><a style="color: #444" href="https://github.com/iyves/mood-music" target="_blank" rel="noopener">Click here to see the github repository for this project.</a></em></strong>
           </div>
 					<div class="row">
 						<div class="col-md">
@@ -156,27 +156,34 @@
     var scrollOver = false;
     var currSlide = 1;
     var maxSlide = 0;
-    setInterval(() => {
-      if (!scrollOver) {
-        $('.colorSlide:nth-child(' + currSlide +')').css('display', 'none');
+    
+    var changeSlide = function(index) {
+      $('.colorSlide:nth-child(' + currSlide +')').css('display', 'none');
+      if ($('.colorSlide:nth-child(' + currSlide +') audio').attr('src') != 'null')
         $('.colorSlide:nth-child(' + currSlide +') audio')[0].pause();
-        
-        currSlide += 1;
-        if (currSlide > maxSlide){
-          currSlide = 1;
-        }
-        $('.colorSlide:nth-child(' + currSlide +')').css('display', 'block');
-        if (!muted)
-          $('.colorSlide:nth-child(' + currSlide +') audio')[0].play();
+      currSlide = index;
+      if (currSlide > maxSlide){
+        currSlide = 1;
       }
+      $('.colorSlide:nth-child(' + currSlide +')').css('display', 'block');
+      if (!muted && $('.colorSlide:nth-child(' + currSlide +') audio').attr('src') != 'null')
+        $('.colorSlide:nth-child(' + currSlide +') audio')[0].play();
+    }
+
+    setInterval(function(){
+      if (!scrollOver)
+        changeSlide(currSlide +1)
     }, 5000); 
 
     $('#mute').click(function(e) {
       muted = !muted;
-      if (muted) {
-        $('.colorSlide:nth-child(' + currSlide +') audio')[0].pause();
-      } else { 
-        $('.colorSlide:nth-child(' + currSlide +') audio')[0].play();
+      if ($('.colorSlide:nth-child(' + currSlide +') audio').attr('src') != 'null') {
+        if (muted)
+        {
+          $('.colorSlide:nth-child(' + currSlide +') audio')[0].pause();
+        } else { 
+          $('.colorSlide:nth-child(' + currSlide +') audio')[0].play();
+        }
       }
       e.preventDefault(); 
     });
@@ -221,7 +228,7 @@
           }
         $('#output').html(o);
         $('.colorSlide:nth-child(1)').css('display', 'block');
-        if (!muted)
+        if (!muted && $('.colorSlide:nth-child(' + currSlide +') audio').attr('src') != 'null')
           $('.colorSlide:nth-child(1) audio')[0].play();
         
         var c ='';
@@ -240,13 +247,8 @@
         
         $('.resultColumn').hover(function(e) {
           scrollOver = true;
-          $('.colorSlide:nth-child(' + currSlide +')').css('display', 'none');
-          $('.colorSlide:nth-child(' + currSlide +') audio')[0].pause(); 
-          
-          currSlide = $('.resultColumn').index(this) + 1;
-          $('.colorSlide:nth-child(' + currSlide +')').css('display', 'block');
-          if (!muted)
-            $('.colorSlide:nth-child(' + currSlide +') audio')[0].play();
+          var num = $('.resultColumn').index(this) + 1;
+          changeSlide(num);
         }, function() { scrollOver = false; });
       };
 
