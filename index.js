@@ -28,37 +28,96 @@ app.get('/',function(req,res){
 
 // Request for data when user submit an artist/album/track keyword
 app.post('/submit', function(req, res) { 
-  getTracks(req.body.input).then(
+  getTracks(req.body.input, req.body.option).then(
     function(tracks) {
+      var trackIds = [];
       var trackInfo = [];
-      var items = tracks.tracks.items; 
+      var items = tracks.tracks.items;  
 
       for (var t in items) {
-          var artists = [];
-          for (var a in items[t].artists ) {
-            artists.push(items[t].artists[a].name);
-          }
-          var h = Math.floor(Math.random() * 360);
-          var s = Math.floor(Math.random() * 100);
-          var l = Math.floor(Math.random() * 100);
+        // Congregate all track ids for audio analysis
+        trackIds.push(items[t].id); 
+      
+        // Congregate track data, but leave color as hsl(0,0,0) by default
+        var artists = [];
+        for (var a in items[t].artists ) {
+          artists.push(items[t].artists[a].name);
+        }
 
-
-          trackInfo.push({'id': items[t].id,
-                          'name': items[t].name,
-                          'popularity': items[t].popularity,
-                          'artists': artists,
-                          'color': {
-                            'h': h,
-                            's': s,
-                            'l': l  
-                          }
-                        });
+        trackInfo.push({'id': items[t].id,
+                        'name': items[t].name,
+                        'popularity': items[t].popularity,
+                        'artists': artists,
+                        'color': { 'h': 0, 's': 0, 'l': 0 }});
       }
+      
+      // Do another request for track audio features
+      getFeatures(trackIds.join(',')).then(
+        function(features) {
+          // Isolate audio features only 
+          var trackAudioFeatures = features.audio_features;
+          
+          for (var i = 0; i < trackAudioFeatures.length; i += 1) {
+            var colors = {'red': 0, 'orange': 25, 'yellow': 52,
+              'green': 110, 'blue': 240, 'violet': 285 };
+            var trackColor = trackInfo[i].color;
+            var trackFeat = trackAudioFeatures[i];
+            
+            // Saturation is based on valence and mode
+            // Lightness is based on energy and mode
+            if (trackFeat.mode) { // Major modality  
+              trackColor.s = 100 - (trackFeat.valence * 50.0);
+              trackColor.l = 50 + (trackFeat.energy * 50.0);
+              
+              // Hue is based on key of song
+              switch (trackFeat.key) {
+                case 0: trackColor.s = 0; break; // C
+                case 1: trackColor.h = colors['violet']; break; // C#
+                case 2: trackColor.h = colors['violet']; break; // D
+                case 3: trackColor.h = colors['green']; break; // D#
+                case 4: trackColor.h = colors['green']; break; // E
+                case 5: trackColor.h = colors['yellow']; break; // F
+                case 6: trackColor.h = colors['yellow']; break; // F#
+                case 7: trackColor.h = colors['orange']; break; // G
+                case 8: trackColor.h = colors['red']; break; // G#
+                case 9: trackColor.h = colors['red']; break; // A
+                case 10: trackColor.h = colors['blue']; break; // A#
+                case 11: trackColor.h = colors['blue']; break; // B
+                default:
+                  trackColor.h = 110; break; // Default green color
+              }
 
+            } else { // Minor modality
+              trackColor.s = 50 - (trackFeat.valence * 50.0);
+              trackColor.l = (trackFeat.energy * 50.0);
+              
+              // Hue is based on key of song
+              switch (trackFeat.key) {
+                case 0: trackColor.h = colors['red']; break; // Am
+                case 1: trackColor.h = colors['blue']; break; // Bbm 
+                case 2: trackColor.h = colors['blue']; break; // Bm 
+                case 3: trackColor.s = 0; break; // Cm
+                case 4: trackColor.s = 0; break; // Dbm
+                case 5: trackColor.h = colors['purple']; break; // Dm
+                case 6: trackColor.h = colors['purple']; break; // Ebm
+                case 7: trackColor.h = colors['green']; break; // Em
+                case 8: trackColor.h = colors['yellow']; break; // Fm
+                case 9: trackColor.h = colors['yellow']; break; // Gbm
+                case 10: trackColor.h = colors['orange']; break; // Gm
+                case 11: trackColor.h = colors['orange']; break; // G#m
+                default:
+                  trackColor.h = 110; break; // Default green color
+              }
+            }
+          
 
+          }
 
-      res.send(trackInfo); 
-    }, function(err) {
+        res.send(trackInfo); 
+      }, function(err) { // For Audio Feature request
+        console.log(err);
+      }); 
+    }, function(err) { // For track/artist search request
       console.log(err);
     });
 });
@@ -115,10 +174,41 @@ var getCredentials = function (req) {
 }
 
 
-var getTracks = function(searchKey) { 
+
+var getTracks = function(searchKey, searchOption) { 
   // Options for request 
   var options = {
-    url: 'https://api.spotify.com/v1/search?q=' + searchKey + '&type=track',
+    url: 'https://api.spotify.com/v1/search?q=' + searchOption + ':' + searchKey + '&type=track&limit=10',
+    headers: {
+      'Authorization': 'Bearer ' + token.access_token
+    },
+    json: true
+  };
+  
+  // Do the request!
+  var promise = new Promise(function(resolve, reject) {
+    request.get(options, function(error, response, body){
+      resolve (body);
+    })
+  });  
+
+  promise.then(function(data) {
+    return data; 
+  }, function(err) {
+    console.log(err); 
+    return [];
+  });
+
+  return promise;
+   
+}
+
+
+
+var getFeatures = function(trackNames) {
+  // Options for request 
+  var options = {
+    url: 'https://api.spotify.com/v1/audio-features/?ids=' + trackNames + '&type=track',
     headers: {
       'Authorization': 'Bearer ' + token.access_token
     },
