@@ -14,6 +14,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Holds onto the authentication key for making requests through Spotify API
+var CLIENT_ID = process.env.CLIENT_ID;
+var CLIENT_SECRET = process.env.CLIENT_SECRET;
 var token = {};
 
 
@@ -160,7 +162,7 @@ var getCredentials = function (req) {
    var authOptions = {
      method: 'POST',
      url: 'https://accounts.spotify.com/api/token',
-     headers: { 'Authorization': 'Basic ' + (new Buffer('d7038e13e0374e98916ccc5e3bfdf257' + ':' + '46ec9dccca394360a7b1a5e9423fc303').toString('base64')) },
+     headers: { 'Authorization': 'Basic ' + (new Buffer(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64')) },
      form: { grant_type: 'client_credentials' },
      json: true
    };
