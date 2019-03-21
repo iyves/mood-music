@@ -20,19 +20,6 @@ This project is meant to be a representation of what Synthesia might look like t
 
 This project uses an express backend, bootstrap frontend, and the Spotify api.
 
-## TODO
-
-By March 8
--   Create form on front end to get data from user for request
-  - What type of data should the user be able to request?
--   Connect form data on submit to server sending query to spotify
--   Create display results page, purely display raw results
--   Create algorithm for turning results into a color
--   Visualize results using
--   Each one of us completes a separate journal
--   Create presentation for our application
--   Link to the application on our websites in the 'projects' section
-
 <hr/>
 
 ## [Notes for git](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow):
