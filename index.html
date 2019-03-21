@@ -123,8 +123,14 @@
 						<div class="col-md">
 							<div class="card text-dark">
 								<div class="card-body">
-									<h2 class="card-title">Steven Borrego</h2>
-									<p>Lorem Ipsum</p>
+                  <h2 class="card-title">Steven Borrego</h2>
+                  <hr/> 
+                  <p>A computer science major at Portland State University.</p>
+                  <p>I enjoy classic film and literature, guitar/bass/drums/keyboards, audio engineering, LP collecting, cycling, and technology.</p>
+                  <p>
+                    <a style="color: #555;" href="https://www.linkedin.com/in/steven-borrego-b60107181/" target="_blank" rel="noopener">linkedin</a>&emsp;
+                      <a style="color: #555;" href="https://github.com/stevengborrego" target="_blank" rel="noopener">github</a>
+                  </p>
 								</div>
 							</div>
 						</div>
@@ -156,6 +162,8 @@
     var scrollOver = false;
     var currSlide = 1;
     var maxSlide = 0;
+
+    var results = false;
     
     var changeSlide = function(index) {
       $('.colorSlide:nth-child(' + currSlide +')').css('display', 'none');
@@ -192,6 +200,7 @@
         $('#output').html('');
         maxSlide = data.length;
         currSlide = 1;  
+        results = true;
 
         var o = '';
           for (var i = 0; i < maxSlide; i +=1) {
@@ -254,8 +263,9 @@
 
     var noResult = function(data) {
         console.log('no results');
-        $('#columns').css("min-height", "50vw").css("min-width", "100vw").css("margin-bottom", "5vh");
-        $('#columns').addClass('bg-alert');
+
+        $('#columns').css("min-height", "50vw").css("min-width", "100vw").css("margin-bottom", "5vh").css("background-color", "rgb(217,83,79)");
+        $('#columns').html('<div class="container text-light" id="info"><div class="row justify-content-center" style="margin-top: 20vh"><h1 style="font-size: 5em">No Results</h1></div>');
         $('#columns').css('display', 'float');
 
         return;
@@ -270,6 +280,11 @@
         'success': showResult,
         'error': noResult
         });
+
+        if(results === false) {
+          noResult();
+        }
+        results = false;
     });
 
     $('#input').on('keyup', function(event){
