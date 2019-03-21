@@ -115,7 +115,14 @@
 								<div class="card text-dark">
 									<div class="card-body">
 										<h2 class="card-title">Yves Wienecke</h2>
-										<p>Lorem Ipsum</p>
+                    <hr/> 
+										<p>A dedicated third year student pursuing a double major in computer science and Russian at Portland State University looking for industry experience in software engineering.</p>
+                    <p>Study abroad in Korea and Kazakhstan adapt me to excel in foreign situations and cooperate with diverse backgrounds.</p>
+                    <p>I am detail oriented, self-motivated, and an empathetic leader with strong soft skills and a passion for being an active member in my community.</p>
+                    <p>
+                      <a style="color: #555;" href="https://www.linkedin.com/in/yves-wienecke/" target="_blank" rel="noopener">linkedin</a>&emsp;
+                      <a style="color: #555;" href="https://github.com/iyves" target="_blank" rel="noopener">github</a>
+                    </p>
 									</div>
 							</div>
 						</div>
@@ -175,9 +182,16 @@
                   o += '<h2 style="text-align: center; color: #DEDEDE;">';
                   o += '<a target="_blank" rel="noopener" href="' + data[i].url + '" style="color: #DEDEDE;">';
                   o += data[i].name + '</a><hr/></h2>';
-                  o += '<p style="color: #999;"> Artists:&nbsp;&emsp;&emsp;&emsp;' + data[i].artists.join(', ');
-                    o += '<br/>Popularity:&nbsp;&emsp;' + data[i].popularity;
-                  o+= '</p>';
+                  o += '<div style="width:100%">';
+                    o += '<div style="display: inline-block; margin-right: 5%;">'; 
+                      o+= '<img style="border-radius: 3%;" src="' + data[i].image + '"/>';
+                    o += '</div>'; 
+                    o += '<div style="display: inline-block; text-align: left;">'; 
+                      o += '<p style="color: #999;">Artists:&nbsp;&emsp;&emsp;&emsp;' + data[i].artists.join(', ');
+                        o += '<br/>Popularity:&nbsp;&emsp;' + data[i].popularity;
+                      o+= '</p>';
+                    o += '</div>'; 
+                  o+= '</div>';
                   o += '<audio preload="auto" src="' + data[i].sound + '"></audio>';
             o += '</div></div>';
           }
