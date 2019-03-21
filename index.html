@@ -73,8 +73,8 @@
               <div class="col-sm-4">
                 <label for="sel1">Search by:</label>
                 <select class="form-control" id="sel1">
-                  <option>Artist</option>
-                  <option>Song</option>
+                  <option value="artist">Artist</option>
+                  <option value="track">Song</option>
                 </select>
                 <label class="col-form-label" style="text-align: right;">Search:</label>
                 <input name="search" type="text" id="input" class="form-control"></input>
@@ -161,8 +161,8 @@
        $('#columns').html(c);
        $('#columns').css("min-height", "50vw").css("min-width", "100vw").css("margin-bottom", "5vh");
        $('.carousel-inner').css("min-height", "20vw").css("min-width", "30vw");
-       $('#columns').css('display', block);
-       $('#output').css("display", block);
+       $('#columns').css('display', 'float');
+       $('#output').css("display", 'float');
       }
 
 		$('#submit').on('click', function(event){
