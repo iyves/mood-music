@@ -57,6 +57,7 @@
 					<div class="bg-dark p-4 ">
 						<h4 class="align-left nav-item"><a class="text-white" href="#top">top</a></h4>
 						<span><a class="text-white" href="#about">about</a></span><br/>
+						<span><a class="text-white" href="#columns">results</a></span><br/>
 						<span><a id="mute" class="text-white" href="#">mute</a></span>
 					</div>
 				</div>
@@ -98,10 +99,27 @@
 
 		<div class="container text-light bg-secondary" style="min-width: 100vw" name="about" id="about">
 			<div class="row justify-content-center">
-				<h1 style="font-size: 7em">About</h1>
+				<h1 style="font-size: 7em; margin-top: 3%;">About</h1>
 				<div class="container" id="cards">
+          <div style="margin: 5%;">
+            <h2>Synthesia is a peculiar medical condition that combines senses together.</h2><br/>
+            
+            A person may:<br/>
+            <ul>
+              <li>Hear a sound and see a color</li>
+              <li>Smell something and hear a sound</li>
+              <li>See a word and taste a flavor</li>
+            </ul>
+            This project is meant to be a representation of what Synthesia might look like to those who have it.<br/>
+            <ol> 
+                <li>Enter a song or playlist</li>
+                <li>We calculate a color for each song</li>
+                <li>Visualize your data!</li>
+            </ol>
+            This project uses an express backend, bootstrap frontend, and the Spotify api.<br/><br>
+            <a style="color: #454545" href="https://github.com/iyves/mood-music" target="_blank" rel="noopener">Click here to see the github repository for this project.</a>
+          </div>
 					<div class="row">
-
 						<div class="col-md">
 							<div class="card text-dark">
 								<div class="card-body">
@@ -129,24 +147,28 @@
 					</div>
 					</div>
 			</div>
+      <br/><br/><br/>
 		</div>
 	</body>
 
 	<script>
     var muted = false;
+    var scrollOver = false;
     var currSlide = 1;
     var maxSlide = 0;
     setInterval(() => {
-      $('.colorSlide:nth-child(' + currSlide +')').css('display', 'none');
-      $('.colorSlide:nth-child(' + currSlide +') audio')[0].pause();
-      
-      currSlide += 1;
-      if (currSlide > maxSlide){
-        currSlide = 1;
+      if (!scrollOver) {
+        $('.colorSlide:nth-child(' + currSlide +')').css('display', 'none');
+        $('.colorSlide:nth-child(' + currSlide +') audio')[0].pause();
+        
+        currSlide += 1;
+        if (currSlide > maxSlide){
+          currSlide = 1;
+        }
+        $('.colorSlide:nth-child(' + currSlide +')').css('display', 'block');
+        if (!muted)
+          $('.colorSlide:nth-child(' + currSlide +') audio')[0].play();
       }
-      $('.colorSlide:nth-child(' + currSlide +')').css('display', 'block');
-      if (!muted)
-        $('.colorSlide:nth-child(' + currSlide +') audio')[0].play();
     }, 5000); 
 
     $('#mute').click(function(e) {
@@ -204,7 +226,7 @@
         
         var c ='';
         for(var i = 0; i < data.length; i += 1) {
-          c += '<div class="col-sm" style="background-color: hsl('
+          c += '<div class="col-sm resultColumn" style="background-color: hsl('
             + data[i].color['h'] + ','
             + data[i].color['s'] + '%, '
             + data[i].color['l'] + '%'
@@ -215,6 +237,17 @@
        $('#output').css("min-height", "20vw").css("min-width", "30vw");
        $('#columns').css('display', 'float');
        $('#output').css("display", 'float');
+        
+        $('.resultColumn').hover(function(e) {
+          scrollOver = true;
+          $('.colorSlide:nth-child(' + currSlide +')').css('display', 'none');
+          $('.colorSlide:nth-child(' + currSlide +') audio')[0].pause(); 
+          
+          currSlide = $('.resultColumn').index(this) + 1;
+          $('.colorSlide:nth-child(' + currSlide +')').css('display', 'block');
+          if (!muted)
+            $('.colorSlide:nth-child(' + currSlide +') audio')[0].play();
+        }, function() { scrollOver = false; });
       };
 
     var noResult = function(data) {
