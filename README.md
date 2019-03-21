@@ -18,7 +18,7 @@ This project is meant to be a representation of what Synthesia might look like t
 2. We calculate a color for each song 
 3. Visualize your data!
 
-This project uses an express backend, bootstrap frontend, and apis such as Spotify and d3.
+This project uses an express backend, bootstrap frontend, and the Spotify api.
 
 ## TODO
 
