@@ -11,3 +11,6 @@ node_modules
 
 # All swap files
 *.swp
+
+# Token keys
+app.yaml
