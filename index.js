@@ -49,6 +49,7 @@ app.post('/submit', function(req, res) {
                         'url': items[t].external_urls.spotify,
                         'name': items[t].name,
                         'popularity': items[t].popularity,
+                        'album': items[t].album.name,
                         'artists': artists,
                         'color': { 'h': 0, 's': 0, 'l': 0 }});
       }
