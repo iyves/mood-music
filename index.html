@@ -116,7 +116,19 @@
                 <li>We calculate a color for each song</li>
                 <li>Visualize your data!</li>
             </ol>
-            This project uses an express backend, bootstrap frontend, and the Spotify api.<br/><br>
+	    <br/>
+	    The color for each song is represented in HSL form.<br/><br/>
+
+	    Hue is determined from key, congruent with the <a style="color: #CCC;" href="http://whs-blogs.co.uk/teaching/hearing-colour-synesthesia-musical-composition/" target="_blank" rel="noopener">notes</a> of a 20th century composer, Olivier Messiaen, who attributed his synesthesia to the circle of fifths.<br/>
+	    Depending on the modality (major vs. minor; happy sounding vs. sound souding)  of a song, a different color is chosen from the key.<Br/><Br/>
+
+	    Saturation depends on valence: a lower valence maps means that the song is less positive, which maps to the vibrance of the color.<br/><Br/>
+	    
+	    Finally, modality and energy determine the lightless of the color.<Br/>
+	    High energy (aggression in the song such as a metal song versus a ballad) corresponds to a fuller color (closer to 50% lightness).<br/>
+	    A song with low energy and minor modality will be darker, while a song with low energy and major modality will be lighter<br/><br/>
+            
+	    This project uses an express backend, bootstrap frontend, and the Spotify api.<br/><br>
             <strong><em><a style="color: #444" href="https://github.com/iyves/mood-music" target="_blank" rel="noopener">Click here to see the github repository for this project.</a></em></strong>
           </div>
 					<div class="row">
@@ -142,7 +154,6 @@
                     <hr/> 
 										<p>A dedicated third year student pursuing a double major in computer science and Russian at Portland State University looking for industry experience in software engineering.</p>
                     <p>Study abroad in Korea and Kazakhstan adapt me to excel in foreign situations and cooperate with diverse backgrounds.</p>
-                    <p>I am detail oriented, self-motivated, and an empathetic leader with strong soft skills and a passion for being an active member in my community.</p>
                     <p>
                       <a style="color: #555;" href="https://www.linkedin.com/in/yves-wienecke/" target="_blank" rel="noopener">linkedin</a>&emsp;
                       <a style="color: #555;" href="https://github.com/iyves" target="_blank" rel="noopener">github</a>
@@ -253,6 +264,10 @@
        $('#output').css("min-height", "20vw").css("min-width", "30vw");
        $('#columns').css('display', 'float');
        $('#output').css("display", 'float');
+
+        $('html, body').animate({
+          scrollTop: $("#output").offset().top - 300
+    	}, 1000);
         
         $('.resultColumn').hover(function(e) {
           scrollOver = true;
@@ -264,10 +279,13 @@
     var noResult = function(data) {
         console.log('no results');
 
-        $('#columns').css("min-height", "50vw").css("min-width", "100vw").css("margin-bottom", "5vh").css("background-color", "rgb(217,83,79)");
+        $('#columns').css("min-height", "50vw").css("max-width", "100vw").css("margin-bottom", "5vh").css("background-color", "rgb(217,83,79)");
         $('#columns').html('<div class="container text-light" id="info"><div class="row justify-content-center" style="margin-top: 20vh"><h1 style="font-size: 5em">No Results</h1></div>');
         $('#columns').css('display', 'float');
         $('#output').html('');
+        $('html, body').animate({
+          scrollTop: $("#columns").offset().top
+    	}, 1000);
         return;
     };
 
@@ -277,8 +295,7 @@
         'url' : '/submit',
 				'type': 'POST',
 				'data':  {option: $('#sel1').val(), input: $('#input').val() },
-        'success': showResult,
-        'error': noResult
+        'success': showResult
         });
 
         if(results === false) {
