@@ -34,7 +34,7 @@ app.post('/submit', function(req, res) {
     function(tracks) {
       var trackIds = [];
       var trackInfo = [];
-      var items = tracks.tracks.items;  
+      var items = tracks.tracks.items;  	
 
       for (var t in items) {
         // Congregate all track ids for audio analysis
@@ -55,7 +55,7 @@ app.post('/submit', function(req, res) {
                         'artists': artists,
                         'color': { 'h': 0, 's': 0, 'l': 0 }});
       }
-      
+      if (trackIds.length != 0) { 
       // Do another request for track audio features
       getFeatures(trackIds.join(',')).then(
         function(features) {
@@ -72,7 +72,7 @@ app.post('/submit', function(req, res) {
             // Lightness is based on energy and mode
             if (trackFeat.mode) { // Major modality  
               trackColor.s = 100 - (trackFeat.valence * 50.0);
-              trackColor.l = 50 + (trackFeat.energy * 50.0);
+              trackColor.l = 100 -  (trackFeat.energy * 50.0);
               
               // Hue is based on key of song
               switch (trackFeat.key) {
@@ -116,15 +116,20 @@ app.post('/submit', function(req, res) {
             }
           
 
-          }
+	}
 
         res.send(trackInfo); 
       }, function(err) { // For Audio Feature request
         console.log(err);
+      }).catch((error) => {
+        console.log(error.message);	  
       }); 
+      }
     }, function(err) { // For track/artist search request
       console.log(err);
-    });
+    }).catch((error) => {
+        console.log(error.message);	  
+      });
 });
 
 
@@ -162,7 +167,7 @@ var getCredentials = function (req) {
    var authOptions = {
      method: 'POST',
      url: 'https://accounts.spotify.com/api/token',
-     headers: { 'Authorization': 'Basic ' + (new Buffer(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64')) },
+     headers: { 'Authorization': 'Basic ' + (Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64')) },
      form: { grant_type: 'client_credentials' },
      json: true
    };
@@ -202,6 +207,8 @@ var getTracks = function(searchKey, searchOption) {
   }, function(err) {
     console.log(err); 
     return [];
+  }).catch((error) => {
+    console.log(error.message);	  
   });
 
   return promise;
