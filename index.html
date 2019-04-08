@@ -210,45 +210,108 @@
     });
     var showResult = function(data) {
         console.log(data);
-        $('#output').html('');
         maxSlide = data.length;
         currSlide = 1;  
         results = true;
 
-        var o = '';
-          for (var i = 0; i < maxSlide; i +=1) {
-            o += '<div class="colorSlide" style="margin: 0 auto; position: relative; text-align: center;';
-            o += 'border-style: solid; border-width: 10%; border-color: #333333; border-radius: 2%;';
-            o += 'display: none; height: 50vh; width: 50%; overflow: hidden;';
-            o += 'background-color: hsl('
-              + data[i].color['h'] + ', '
-              + data[i].color['s'] + '%, '
-              + data[i].color['l'] + '%'
-              + ')">'; 
-              o += '<div class="colorCaption" ';
-              o += 'style="background-color: #404040;';
-				      o += "font-family: 'Comfortaa', cursive;";
-              o += 'width: 100%; padding: 2%;';
-              o += 'position: absolute; bottom: 0;">';
-                  o += '<h2 style="text-align: center; color: #DEDEDE;">';
-                  o += '<a target="_blank" rel="noopener" href="' + data[i].url + '" style="color: #DEDEDE;">';
-                  o += data[i].name + '</a><hr/></h2>';
-                  o += '<div style="width:100%; display: flex; flex-direction: row; justify-content: center;">';
-                    o += '<div style="margin-right: 5%;">'; 
-                      o+= '<img style="border-radius: 3%;" src="' + data[i].image + '"/>';
-                    o += '</div>'; 
-                    o += '<div style="text-align: left;">'; 
-                      o += '<p style="color: #999;">';
-                        o += 'Album:&nbsp;&emsp;&emsp;&emsp;' + data[i].album;
-                        o += '<br/>Artists:&nbsp;&emsp;&emsp;&emsp;' + data[i].artists.join(', ');
-                        o += '<br/>Popularity:&nbsp;&emsp;' + data[i].popularity;
-                      o+= '</p>';
-                    o += '</div>'; 
-                  o+= '</div>';
-                  o += '<audio preload="auto" src="' + data[i].sound + '"></audio>';
-            o += '</div></div>';
-          }
-        $('#output').html(o);
+        $('#output').html('');
+        // For each song that spotify found (up to 10), put the song color and details into a carousel slide!
+        for (var i = 0; i < maxSlide; i += 1) {
+          $('#output').append($('<div></div>')
+            .addClass('colorSlide')
+            .css({
+              'margin': '0 auto',
+              'position': 'relative',
+              'text-align': 'center',
+              'display': 'none',
+              'height': '50vh',
+              'width': '50%',
+              'overflow': 'hidden',
+              'background-color': 'hsl(' + data[i].color['h'] + ', '
+                                       + data[i].color['s'] + '%, '
+                                       + data[i].color['l'] + '%)'
+            }) 
+            // This is for the song details
+            .each(function() {
+              $(this).append($('<div></div>')
+                      .addClass('colorCaption')
+                      .css({
+                        'background-color': '#404040',
+                        'font-family': "'Comfortaa', cursive",
+                        'width': '100%',
+                        'padding': '2%',
+                        'position': 'absolute',
+                        'bottom': '0' 
+                      })
+              .each (function() {
+                $(this).append($('<h2></h2>')
+                        .css({
+                          'text-align': 'center',
+                          'color': '#DEDEDE'
+                        })
+                // Song name
+                .each(function() {
+                  $(this).append($('<a></a>')
+                          .attr({
+                          target: '_blank',
+                          rel: 'noopener',
+                          href: data[i].url
+                          })
+                          .css({
+                            'color': '#DEDEDE'
+                          })
+                          .text(data[i].name))
+                          .append($('<hr/>'))
+                }))
+                .append($('<div></div>')
+                        .css({
+                          'width': '100%',
+                          'display': 'flex',
+                          'flex-direction': 'row',
+                          'justify-content': 'center'
+                        })
+                        .each(function() {
+                          $(this).append($('<div></div>')
+                                 .css({
+                                   'margin-right': '5%'
+                                 })
+                                 // Album art for song
+                                 .each(function() {
+                                   $(this).append($('<img>')
+                                   .attr({'src': data[i].image})
+                                   .css({
+                                     'border-radius': '3%'
+                                   }))
+                                 })
+                          ).append($('<div></div>')
+                                   .css({
+                                     'text-align': 'left'
+                                   })
+                                   // Album details
+                                   .each(function() {
+                                      $(this).append($('<p></p>')
+                                             .css({
+                                               'color': '#999'
+                                             })
+                                             .html(
+                                              'Album:&nbsp;&emsp;&emsp;&emsp;' + data[i].album +
+                                              '<br/>Artists:&nbsp;&emsp;&emsp;&emsp;' + data[i].artists.join(', ') +
+                                              '<br/>Popularity:&nbsp;&emsp;' + data[i].popularity
+                                             ))
+                                   })
+                           )  
+                        })
+                )
+                .append($('<audio></audio>', {
+                          'preload': 'auto',
+                          'src': data[i].sound
+                        }))
+              }))
+            })
+          );
+        }
+
+        // Display first slide upon receiving search result
         $('.colorSlide:nth-child(1)').css('display', 'block');
         if (!muted && $('.colorSlide:nth-child(' + currSlide +') audio').attr('src') != 'null')
           $('.colorSlide:nth-child(1) audio')[0].play();
@@ -266,7 +329,6 @@
        $('#output').css("min-height", "20vw").css("min-width", "30vw");
        $('#columns').css('display', 'float');
        $('#output').css("display", 'float');
-
         $('html, body').animate({
           scrollTop: $("#output").offset().top - 300
     	}, 1000);
