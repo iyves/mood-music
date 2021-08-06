@@ -1,5 +1,6 @@
 'use strict';
 
+require('dotenv').config()
 var express = require("express");
 var app = express();
 var path = require("path")
@@ -63,9 +64,17 @@ app.post('/submit', function(req, res) {
           var trackAudioFeatures = features.audio_features;
           
           for (var i = 0; i < trackAudioFeatures.length; i += 1) {
+            if (trackInfo[i] == undefined) {
+              continue;
+            }
             var colors = {'red': 0, 'orange': 25, 'yellow': 52,
               'green': 110, 'blue': 240, 'violet': 285 };
-            var trackColor = trackInfo[i].color;
+            
+            var trackColor = { 'h': 0, 's': 0, 'l': 0 };
+            if ("color" in trackInfo[i]) {
+              trackColor = trackInfo[i].color;
+            }
+
             var trackFeat = trackAudioFeatures[i];
             
             // Saturation is based on valence and mode

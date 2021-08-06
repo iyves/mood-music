@@ -19,6 +19,12 @@ This project is meant to be a representation of what Synthesia might look like t
 3. Visualize your data!
 
 This project uses an express backend, bootstrap frontend, and the Spotify api.
+  
+Create a `.env` file in the root directory with the following information from the Spotify API:
+```bash
+CLIENT_ID=client_id_from_spotify
+CLIENT_SECRET=secret_from_spotify
+```
 
 <hr/>
 
